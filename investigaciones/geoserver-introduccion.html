@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a GeoServer e Instalación en Linux</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3, h4 {
+            color: #2c3e50;
+        }
+        strong {
+            color: #e74c3c;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+        ul {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>APÉNDICE 1 - Introducción a GeoServer e Instalación en Linux</h1>
+
+    <h2>¿Qué es GeoServer?</h2>
+    <p>GeoServer es un servidor de código abierto basado en <strong>JAVA</strong> diseñado para facilitar la visualización y distribución de datos geoespaciales. Utiliza estándares del Open Geospatial Consortium (OGC), como WMS (Web Map Service), WFS (Web Feature Service) y WCS (Web Coverage Service), para compartir datos vectoriales y ráster a través de servicios web. Puedes encontrar más detalles sobre su documentación en el sitio oficial de <a href="https://geoserver.org/">GeoServer</a>.</p>
+
+    <strong>Características principales:</strong>
+    <ul>
+        <li><strong>Compartición de Datos:</strong> Soporta múltiples formatos geoespaciales, como GeoTIFF, Shapefiles y bases de datos PostGIS.</li>
+        <li><strong>Interoperabilidad:</strong> Funciona de manera fluida con herramientas como QGIS.</li>
+        <li><strong>Escalabilidad:</strong> Permite optimización mediante clustering y almacenamiento en caché para manejar grandes volúmenes de datos.</li>
+    </ul>
+
+    <h2>Instalación de GeoServer en Linux</h2>
+    <p>Para instalar GeoServer en un sistema Linux, sigue los siguientes pasos:</p>
+
+    <h3>Usa la Terminal con Permisos de Administrador</h3>
+    <p>Es recomendable trabajar como usuario administrador para evitar ingresar la contraseña varias veces. Para ello, puedes convertirte en <strong>root</strong> con el siguiente comando:</p>  
+    <pre><code>sudo -u root -i
+sudo apt-get update</code></pre>
+
+    <h3>Paso 1: Verificar e Instalar JAVA 8</h3>
+    <p>GeoServer requiere específicamente <strong>Java 8</strong>. Instálalo ejecutando:</p>  
+    <pre><code>sudo apt-get install openjdk-8-jdk
+sudo apt-get install openjdk-8-jre</code></pre>
+
+    <p>Luego, verifica la instalación con:</p>  
+    <pre><code>java -version</code></pre>
+    <p>Deberías ver una salida con la versión <strong>1.8.x</strong>.</p>
+
+    <h3>Paso 2: Instalación de PostgreSQL (Opcional)</h3>
+    <p>Guardar datos geoespaciales en una base de datos es preferible en muchos casos, y <strong>PostgreSQL</strong> es una opción avanzada y de código abierto. Además, al instalar <strong>PostGIS</strong>, puedes realizar consultas geoespaciales (como <strong>buffer</strong>, <strong>within</strong>, <strong>intersects</strong>, etc.).</p>  
+    <p>Instala PostgreSQL y sus componentes adicionales con:</p>  
+    <pre><code>sudo apt install postgresql postgresql-contrib
+sudo su - postgres
+psql</code></pre>
+    <p>Para salir del entorno de PostgreSQL, usa:</p>  
+    <pre><code>\q
+exit</code></pre>
+
+    <p>Luego, instala PostGIS:</p>  
+    <pre><code>sudo apt install postgis</code></pre>
+
+    <h3>Paso 3: Descarga de GeoServer</h3>
+    <p>La instalación de GeoServer sin GUI requiere algunos pasos adicionales. Primero, crea un directorio para descargar y descomprimir los archivos:</p>  
+    <pre><code>cd /usr/share
+mkdir geoserver
+cd geoserver</code></pre>
+
+    <p>Descarga GeoServer desde la página oficial utilizando <strong>wget</strong>. Por ejemplo:</p>  
+    <pre><code>wget https://sourceforge.net/projects/geoserver/files/GeoServer/2.18.1/geoserver-2.18.1-bin.zip</code></pre>
+
+    <p>Después, descomprime el archivo:</p>  
+    <pre><code>unzip geoserver-2.18.1-bin.zip</code></pre>
+
+    <h3>Paso 4: Configuración del Entorno</h3>
+    <p>Para hacer que GeoServer sea funcional, define la variable de entorno:</p>  
+    <pre><code>echo "export GEOSERVER_HOME=/usr/share/geoserver" >> ~/.profile
+. ~/.profile</code></pre>
+
+    <p>Asegúrate de que tu usuario sea propietario del directorio:</p>  
+    <pre><code>whoami
+echo $USER
+$sudo chown -R TU_USUARIO /usr/share/geoserver/</code></pre>
+
+    <h3>Paso 5: Iniciar GeoServer</h3>
+    <p>Navega al directorio <code>bin</code> y ejecuta el script de inicio:</p>  
+    <pre><code>cd /usr/share/geoserver/bin
+sh startup.sh</code></pre>
+
+    <p>Verás mensajes en la terminal confirmando que GeoServer está en funcionamiento.</p>
+
+    <h3>Paso 6: Configuración para Uso Público</h3>
+    <p>GeoServer utiliza el puerto <strong>8080</strong> por defecto. Asegúrate de que este puerto esté abierto en el servidor para permitir el acceso remoto. Además, necesitas configurar la política <strong>CORS</strong> para permitir la solicitud de datos desde otras fuentes.</p>  
+
+    <strong>Verificar acceso a GeoServer:</strong>
+    <ul>
+        <li>Abre un navegador y visita <code>http://localhost:8080/geoserver/</code>.</li>
+    </ul>
+
+    <strong>Configurar CORS:</strong>
+    <ul>
+        <li>Edita el archivo <code>web.xml</code> ubicado en:</li>
+        <pre><code>$GEOSERVER_HOME/webapps/geoserver/WEB-INF/web.xml</code></pre>
+        <li>Usa el editor de texto <code>vim</code>:</li>
+        <pre><code>sudo vim $GEOSERVER_HOME/webapps/geoserver/WEB-INF/web.xml</code></pre>
+        <li>Descomenta el bloque de configuración de CORS para Jetty y comenta el de Tomcat:</li>
+        <pre><code>&lt;!-- CORS para Jetty --&gt;
+&lt;filter&gt;
+    &lt;filter-name&gt;cross-origin&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.eclipse.jetty.servlets.CrossOriginFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;chainPreflight&lt;/param-name&gt;
+        &lt;param-value&gt;false&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;allowedOrigins&lt;/param-name&gt;
+        &lt;param-value&gt;*&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;allowedMethods&lt;/param-name&gt;
+        &lt;param-value&gt;GET,POST,PUT,DELETE,HEAD,OPTIONS&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;allowedHeaders&lt;/param-name&gt;
+        &lt;param-value&gt;*&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+
+&lt;!-- CORS para Tomcat (comentar) --&gt;
+&lt;!--
+&lt;filter&gt;
+    &lt;filter-name&gt;cross-origin&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.apache.catalina.filters.CorsFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;cors.allowed.origins&lt;/param-name&gt;
+        &lt;param-value&gt;*&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;cors.allowed.methods&lt;/param-name&gt;
+        &lt;param-value&gt;GET,POST,PUT,DELETE,HEAD,OPTIONS&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;cors.allowed.headers&lt;/param-name&gt;
+        &lt;param-value&gt;*&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+--&gt;</code></pre>
+        <li>Descomenta el mapeo del filtro de CORS:</li>
+        <pre><code>&lt;filter-mapping&gt;
+    &lt;filter-name&gt;cross-origin&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</code></pre>
+    </ul>
+
+    <strong>Reiniciar GeoServer:</strong>
+    <ul>
+        <li>Detén GeoServer:</li>
+        <pre><code>cd $GEOSERVER_HOME/bin
+sh shutdown.sh</code></pre>
+        <li>Inicia GeoServer nuevamente:</li>
+        <pre><code>sh startup.sh</code></pre>
+    </ul>
+
+    <strong>Verificar configuración:</strong>
+    <ul>
+        <li>Accede a GeoServer en <code>http://localhost:8080/geoserver/</code>.</li>
+    </ul>
+
+    <strong>Revisar registros en caso de error:</strong>
+    <ul>
+        <li>Si se presentan errores, consulta los registros en:</li>
+        <pre><code>$GEOSERVER_HOME/data_dir/logs/geoserver.log</code></pre>
+    </ul>
+
+    <h2>Conclusión</h2>
+    <p>GeoServer es una herramienta potente para compartir ortofotos y otros datos espaciales en la web. Su integración con PostgreSQL/PostGIS y herramientas como QGIS lo convierte en una opción ideal para proyectos de monitoreo ambiental y conservación a largo plazo.</p>
+
+</body>
+</html>
+
