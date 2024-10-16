@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+<!--
+-->
+<html>
+	<head>
+		<title>PostgreSQl y PostGIS</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+				<!-- Note: The "styleN" class below should match that of the banner element. -->
+					<header id="header" class="alt style2">
+						<a href="../index.html" class="logo"><strong>Nieblas</strong> <span>Sensing Life</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="../index.html">Home</a></li>
+							<li><a href="../geociencia.html">Ciencias de la Tierra</a></li>
+							<li><a href="../arte.html">Arte</a></li>
+							<li><a href="../elements.html">A R I S T A</a></li>
+						</ul>
+						<ul class="actions stacked">
+							<li><a href="#" class="button primary fit">Get Started</a></li>
+							<li><a href="#" class="button fit">Log In</a></li>
+						</ul>
+					</nav>
+
+    <h1>GeoServer e Instalación en Linux</h1>
+ <p>PostgreSQL es un sistema de gestión de bases de datos relacional potente y de código abierto. Con la extensión PostGIS, 
+    se convierte en una herramienta ideal para manejar datos espaciales, permitiendo su uso en Sistemas de Información Geográfica (SIG). 
+    Este manual explica cómo instalar ambos en una distribución Linux basada en Ubuntu.</p>
+
+    <h2>Requisitos Previos</h2>
+    <ul>
+        <li>Sistema operativo: Ubuntu 20.04 o superior.</li>
+        <li>Acceso a internet.</li>
+        <li>Privilegios de superusuario.</li>
+    </ul>
+
+    <h2>Instalación de PostgreSQL y PostGIS</h2>
+
+    <h3>Paso 1: Actualizar Repositorios</h3>
+    <pre><code>sudo apt update && sudo apt upgrade -y</code></pre>
+
+    <h3>Paso 2: Instalar PostgreSQL y PostGIS</h3>
+    <pre><code>sudo apt install postgresql postgresql-contrib postgis postgresql-14-postgis-3</code></pre>
+
+    <h3>Paso 3: Verificar el Estado del Servicio</h3>
+    <pre><code>sudo systemctl status postgresql</code></pre>
+
+    <h3>Paso 4: Acceder a la Consola de PostgreSQL</h3>
+    <pre><code>
+sudo -i -u postgres
+psql
+    </code></pre>
+
+    <h3>Paso 5: Crear Usuario y Base de Datos</h3>
+    <pre><code>
+CREATE USER sig_user WITH PASSWORD 'password';
+CREATE DATABASE sigdb;
+GRANT ALL PRIVILEGES ON DATABASE sigdb TO sig_user;
+    </code></pre>
+
+    <h3>Paso 6: Activar PostGIS en la Base de Datos</h3>
+    <pre><code>
+\c sigdb
+CREATE EXTENSION postgis;
+SELECT postgis_full_version();
+    </code></pre>
+
+    <h3>Paso 7: Salir del Entorno</h3>
+    <pre><code>
+\q
+exit
+    </code></pre>
+
+    <h2>Carga de Datos Espaciales</h2>
+
+    <h3>Carga de Datos Vectoriales</h3>
+    <pre><code>
+sudo apt install gdal-bin
+ogr2ogr -f "PostgreSQL" \
+PG:"dbname=sigdb user=sig_user password=password" \
+/ruta/del/shapefile.shp -nln nombre_capa -overwrite
+    </code></pre>
+
+    <h3>Carga de Datos Ráster</h3>
+    <pre><code>
+raster2pgsql -s 4326 /ruta/del/raster.tif public.raster_capa | \
+psql -U sig_user -d sigdb
+    </code></pre>
+
+    <pre><code>
+SELECT rid, ST_Metadata(rast) FROM raster_capa LIMIT 10;
+    </code></pre>
+
+    <h2>Conclusión</h2>
+    <p>Con PostgreSQL y PostGIS instalados, ahora tienes una base de datos lista para gestionar información espacial. 
+    Puedes utilizar herramientas como <code>GeoServer</code> o <code>QGIS</code> para visualizar y analizar los datos cargados. 
+    Este entorno es ideal para implementar aplicaciones SIG Web interactivas.</p>
+
+    <h2>Referencias</h2>
+    <ul>
+        <li><a href="https://www.postgresql.org/download/">PostgreSQL</a></li>
+        <li><a href="https://postgis.net/">PostGIS</a></li>
+        <li><a href="https://gdal.org/">GDAL</a></li>
+    </ul>
+
+ 
+        <!-- Contact Section -->
+        <section id="contact">
+            <div class="inner">
+                <section>
+                    <form method="post" action="#">
+                        <!-- Form fields... -->
+                    </form>
+                </section>
+            </div>
+        </section>
+
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+							<section>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field half">
+											<label for="name">Name</label>
+											<input type="text" name="name" id="name" />
+										</div>
+										<div class="field half">
+											<label for="email">Email</label>
+											<input type="text" name="email" id="email" />
+										</div>
+										<div class="field">
+											<label for="message">Message</label>
+											<textarea name="message" id="message" rows="6"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send Message" class="primary" /></li>
+										<li><input type="reset" value="Clear" /></li>
+									</ul>
+								</form>
+							</section>
+							<section class="split">
+								<section>
+									<div class="contact-method">
+										<span class="icon solid alt fa-envelope"></span>
+										<h3>Email</h3>
+										<a href="#">nieblas_pi@proton.me/</a>											
+									</div>
+								</section>
+								<section>
+									<div class="contact-method">
+										<span class="icon solid alt fa-phone"></span>
+										<h3>Phone</h3>
+										<span>(+52) 771 348 2341</span>
+									</div>
+								</section>
+								<section>
+									<div class="contact-method">
+										<span class="icon solid alt fa-home"></span>
+										<h3>Address</h3>
+										<span>Providencia, Benito Juárez<br />
+										Ciudad de Mexico, 03100 <br />
+										Mexico </span>
+									</div>
+								</section>
+							</section>
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+<!--								<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+								<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								-->
+								<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								<li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+<!--							<ul class="copyright">
+								<li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+							</ul>	-->
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="/assets/js/jquery.min.js"></script>
+			<script src="/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/assets/js/browser.min.js"></script>
+			<script src="/assets/js/breakpoints.min.js"></script>
+			<script src="/assets/js/util.js"></script>
+			<script src="/assets/js/main.js"></script>
+
+	</body>
+</html>
