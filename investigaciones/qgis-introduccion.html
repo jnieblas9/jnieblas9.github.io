@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<!--
+-->
+<html>
+	<head>
+		<title>QGIS</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+				<!-- Note: The "styleN" class below should match that of the banner element. -->
+					<header id="header" class="alt style2">
+						<a href="../index.html" class="logo"><strong>Nieblas</strong> <span>Sensing Life</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="../index.html">Home</a></li>
+							<li><a href="../geociencia.html">Ciencias de la Tierra</a></li>
+							<li><a href="../arte.html">Arte</a></li>
+							<li><a href="../elements.html">A R I S T A</a></li>
+						</ul>
+						<ul class="actions stacked">
+							<li><a href="#" class="button primary fit">Get Started</a></li>
+							<li><a href="#" class="button fit">Log In</a></li>
+						</ul>
+					</nav>
+
+    <h1>QGIS en LINUX</h1>
+
+    <h2>¿Qué es QGIS?</h2>
+    <p>QGIS es un sistema de información geográfica (SIG) de código abierto que permite el análisis de datos espaciales y la creación de mapas. Este manual te guiará a través de los pasos necesarios para instalar QGIS en una distribución de Linux basada en Ubuntu.</p>
+
+   <h2>2. Prerrequisitos</h2>
+    <p>Asegúrate de tener <b>permisos de administrador</b> en tu sistema y que los paquetes de software estén actualizados. Ejecuta lo siguiente en tu terminal:</p>
+    <pre><code>sudo apt update && sudo apt upgrade</code></pre>
+
+    <h2>3. Instalación de QGIS</h2>
+
+    <h3>3.1. Añadir la Llave del Repositorio</h3>
+    <p>Primero, agrega la llave de firma del repositorio de QGIS con el siguiente comando:</p>
+    <pre><code>wget -qO - https://qgis.org/downloads/qgis-archive-keyring.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/qgis-archive-keyring.gpg > /dev/null</code></pre>
+
+    <h3>3.2. Agregar el Repositorio de QGIS</h3>
+    <p>Después, añade el repositorio correspondiente a tu versión de Ubuntu. Si usas Ubuntu 22.04 (Jammy Jellyfish), usa:</p>
+    <pre><code>sudo add-apt-repository "deb [signed-by=/usr/share/keyrings/qgis-archive-keyring.gpg] https://qgis.org/ubuntu $(lsb_release -c -s) main"</code></pre>
+    <p>Si tu versión no es compatible, puedes intentar usar el repositorio de <b>focal</b> (Ubuntu 20.04):</p>
+    <pre><code>sudo add-apt-repository "deb [signed-by=/usr/share/keyrings/qgis-archive-keyring.gpg] https://qgis.org/ubuntu focal main"</code></pre>
+
+    <h3>3.3. Actualizar el Índice de Paquetes</h3>
+    <p>Actualiza la lista de paquetes disponibles en los repositorios:</p>
+    <pre><code>sudo apt update</code></pre>
+
+    <h3>3.4. Instalar QGIS y Plugins</h3>
+    <p>Instala QGIS junto con el plugin de GRASS ejecutando:</p>
+    <pre><code>sudo apt install qgis qgis-plugin-grass</code></pre>
+
+    <h2>4. Verificación de la Instalación</h2>
+    <p>Una vez completada la instalación, puedes verificar si QGIS está disponible ejecutando:</p>
+    <pre><code>qgis</code></pre>
+    <p>Si QGIS se inicia correctamente, la instalación ha sido exitosa.</p>
+
+    <h2>5. Solución de Problemas</h2>
+    <ul>
+        <li><b>Error de repositorio:</b> Verifica que has añadido la línea correcta al archivo <code>/etc/apt/sources.list.d/qgis.sources</code>.</li>
+        <li><b>Errores de llave:</b> Asegúrate de que la llave del repositorio fue añadida correctamente.</li>
+        <li><b>Paquetes faltantes:</b> Ejecuta <code>sudo apt-get install -f</code> para resolver dependencias.</li>
+    </ul>
+
+    <h2>6. Conclusión</h2>
+    <p>Con estos pasos, habrás instalado QGIS en tu sistema Linux y podrás comenzar a utilizar esta potente herramienta para análisis geoespacial. Si tienes más dudas, visita la <a href="https://qgis.org">documentación oficial de QGIS</a>.</p>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <div class="inner">
+                <section>
+                    <form method="post" action="#">
+                        <!-- Form fields... -->
+                    </form>
+                </section>
+            </div>
+        </section>
+
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+							<section>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field half">
+											<label for="name">Name</label>
+											<input type="text" name="name" id="name" />
+										</div>
+										<div class="field half">
+											<label for="email">Email</label>
+											<input type="text" name="email" id="email" />
+										</div>
+										<div class="field">
+											<label for="message">Message</label>
+											<textarea name="message" id="message" rows="6"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send Message" class="primary" /></li>
+										<li><input type="reset" value="Clear" /></li>
+									</ul>
+								</form>
+							</section>
+							<section class="split">
+								<section>
+									<div class="contact-method">
+										<span class="icon solid alt fa-envelope"></span>
+										<h3>Email</h3>
+										<a href="#">nieblas_pi@proton.me/</a>											
+									</div>
+								</section>
+								<section>
+									<div class="contact-method">
+										<span class="icon solid alt fa-phone"></span>
+										<h3>Phone</h3>
+										<span>(+52) 771 348 2341</span>
+									</div>
+								</section>
+								<section>
+									<div class="contact-method">
+										<span class="icon solid alt fa-home"></span>
+										<h3>Address</h3>
+										<span>Providencia, Benito Juárez<br />
+										Ciudad de Mexico, 03100 <br />
+										Mexico </span>
+									</div>
+								</section>
+							</section>
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+<!--								<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
+								<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								-->
+								<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								<li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+<!--							<ul class="copyright">
+								<li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+							</ul>	-->
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="/assets/js/jquery.min.js"></script>
+			<script src="/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/assets/js/browser.min.js"></script>
+			<script src="/assets/js/breakpoints.min.js"></script>
+			<script src="/assets/js/util.js"></script>
+			<script src="/assets/js/main.js"></script>
+
+	</body>
+</html>
