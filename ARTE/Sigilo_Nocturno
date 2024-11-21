@@ -1,0 +1,48 @@
+# Algoritmo para el sonido del acecho de un jaguar
+
+use_bpm 40  # Ritmo lento para representar el sigilo
+use_debug false  # Oculta mensajes en la consola para mayor inmersión
+
+# Función para reproducir un rugido distante
+define :rugido_distant do
+  sample :ambi_drone, rate: 0.2, amp: 3  # Efecto grave y largo
+  sleep 4
+end
+
+# Función para pasos sigilosos
+define :pasos_sigilosos do
+  3.times do
+    sample :drum_bass_soft, rate: 0.8, amp: 1.5
+    sleep 1.5
+    sample :drum_bass_soft, rate: 1, amp: 1.2
+    sleep 1
+  end
+end
+
+# Ambiente nocturno de la selva
+live_loop :selva do
+  sample :ambi_nature, rate: 1.2, amp: 1  # Sonidos de naturaleza
+  sleep 8
+end
+
+# Rugidos lejanos
+live_loop :rugido do
+  rugido_distant
+  sleep 16
+end
+
+# Pasos sigilosos
+live_loop :pasos do
+  pasos_sigilosos
+  sleep 8
+end
+
+# Ambiente tenso con un sintetizador grave
+live_loop :tension do
+  use_synth :dark_ambience
+  play :c2, release: 4, amp: 1.5
+  sleep 6
+  play :d2, release: 3, amp: 1.2
+  sleep 6
+end
+
